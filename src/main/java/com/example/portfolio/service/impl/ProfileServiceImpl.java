@@ -17,11 +17,6 @@ public class ProfileServiceImpl implements ProfileService {
 	private ProfileDao dao;
 
 	@Override
-	public Profile getProfile() {
-		return dao.findAll().get(0);
-	}
-
-	@Override
 	public Profile addProfile(Profile profile) {
 		dao.save(profile);
 		return profile;
@@ -45,8 +40,8 @@ public class ProfileServiceImpl implements ProfileService {
 		switch (param) {
 			case "description" : profile.setDescription(value);
 								 return Optional.of(profile);
-			case "profileImg" : profile.setProfileImg(value);
-								return Optional.of(profile);
+//			case "profileImg" : profile.setProfileImg(value);
+//								return Optional.of(profile);
 		}
 		return Optional.empty();
 	}

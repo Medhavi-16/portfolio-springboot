@@ -16,4 +16,6 @@ public interface ProjectsService {
 
 	public void deleteProject(String id);
 
+	public List<Projects> getProjectsByGenre(String genre);
+
 }

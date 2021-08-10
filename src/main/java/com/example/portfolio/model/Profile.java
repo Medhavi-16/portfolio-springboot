@@ -1,24 +1,33 @@
 package com.example.portfolio.model;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Profile {
 
 	@Id
+	@GeneratedValue
+	private Long id;
+
+
 	private String name;
 	private String description;
-	private String profileImg;
 
-	public Profile() {
-		super();
-	}
-
-	public Profile(String name, String description, String profileImg) {
+	public Profile(String name, String description, byte[] profileImg) {
 		this.name = name;
 		this.description = description;
 		this.profileImg = profileImg;
+	}
+
+	@Lob
+	private byte[] profileImg;
+
+	public Profile() {
+		super();
 	}
 
 	@Override
@@ -26,7 +35,6 @@ public class Profile {
 		return "Profile{" +
 				"name='" + name + '\'' +
 				", description='" + description + '\'' +
-				", profileImg='" + profileImg + '\'' +
 				'}';
 	}
 
@@ -46,11 +54,12 @@ public class Profile {
 		this.description = description;
 	}
 
-	public String getProfileImg() {
+	public byte[] getProfileImg() {
 		return profileImg;
 	}
 
-	public void setProfileImg(String profileImg) {
+	public void setProfileImg(byte[] profileImg) {
 		this.profileImg = profileImg;
 	}
+
 }

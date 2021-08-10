@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class SocialsServiceImpl implements SocialsService {
 
-	@Autowired
 	private SocialsDao socialsDao;
 
 	List<Socials> socials;
@@ -26,7 +25,12 @@ public class SocialsServiceImpl implements SocialsService {
 	public SocialsServiceImpl() {
 		socials = new ArrayList<>();
 
-		socials.add(new Socials("Github", "www.github.com", "Medhavi-16"));
+		//socials.add(new Socials("Github", "www.github.com", "Medhavi-16"));
+	}
+
+	@Autowired
+	public SocialsServiceImpl(SocialsDao socialsDao) {
+		this.socialsDao = socialsDao;
 	}
 
 	@Override

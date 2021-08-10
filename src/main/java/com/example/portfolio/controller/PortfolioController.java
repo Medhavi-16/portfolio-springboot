@@ -1,13 +1,21 @@
 package com.example.portfolio.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.example.portfolio.Constants;
 import com.example.portfolio.model.Profile;
 import com.example.portfolio.model.Projects;
+import com.example.portfolio.model.SocialMedia;
 import com.example.portfolio.model.Socials;
+import com.example.portfolio.model.Users;
 import com.example.portfolio.service.ProfileService;
 import com.example.portfolio.service.ProjectsService;
+import com.example.portfolio.service.SocialMediaService;
 import com.example.portfolio.service.SocialsService;
+import com.example.portfolio.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +25,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -31,14 +41,12 @@ public class PortfolioController {
 	@Autowired
 	private ProjectsService projectsService;
 
-	/**
-	 * This is the landing page
-	 * @return
-	 */
-	@GetMapping("/home")
-	public Profile home() {
-		return profileService.getProfile();
-	}
+	@Autowired
+	private SocialMediaService socialMediaService;
+
+	@Autowired
+	private UserService userService;
+
 
 	/**
 	 * Get all social media handles
@@ -94,9 +102,20 @@ public class PortfolioController {
 		}
 	}
 
+	/**
+	 *
+	 * @param username Optional param to get projects by user
+	 * @param genre Optional param to get projects by genre
+	 *              Currently supporting fetching by only one param
+	 * @return
+	 */
 	@GetMapping("/projects")
-	public List<Projects> getProjects() {
-		return this.projectsService.getProjects();
+	public List<Projects> getProjects(@RequestParam(value = "_username", required = false) String username, @RequestParam(value = "_genre", required = false) String genre) {
+
+		Map<String, String> params = new HashMap<>();
+		params.put(Constants.USERNAME, username);
+		params.put(Constants.GENRE, genre);
+		return getProjectByParameter(params);
 	}
 
 	@GetMapping("/projects/{projectId}")
@@ -104,9 +123,11 @@ public class PortfolioController {
 		return this.projectsService.getProject(projectId);
 	}
 
+
 	@PostMapping("/projects")
-	public Projects addProject(@RequestBody Projects project) {
-		return  this.projectsService.addProject(project);
+	public Projects addProject(@RequestParam(value = "_username") String username, @RequestBody Projects project) {
+		userService.addProject(username, project);
+		return projectsService.addProject(project);
 	}
 
 	@PutMapping("/projects")
@@ -125,9 +146,11 @@ public class PortfolioController {
 		}
 	}
 
+
 	@PostMapping("/about")
-	public Profile addProfile(@RequestBody Profile profile) {
-		return profileService.addProfile(profile);
+	public Profile addProfile(@RequestParam(value = "_username") String username, @RequestBody Profile profile) {
+		 userService.addProfile(username, profile);
+		 return profileService.addProfile(profile);
 	}
 
 	@PutMapping("/about")
@@ -139,4 +162,36 @@ public class PortfolioController {
 	public Profile updateDescription(@PathVariable String description) {
 		return profileService.updateProfile("description", description);
 	}
+
+	@GetMapping("/socialmedia")
+	public List<SocialMedia> getSocialMedia()
+	{
+		return  this.socialMediaService.get();
+	}
+
+	@PostMapping("/socialmedia")
+	public SocialMedia createSocialMedia(@RequestBody SocialMedia socialMedia) {
+		return this.socialMediaService.create(socialMedia);
+	}
+
+	@PostMapping("/create/user")
+	public String createUser(@RequestBody Users users){
+		return userService.createUser(users);
+	}
+
+	private List<Projects> getProjectByParameter(final Map<String, String> params){
+		for(Map.Entry entry: params.entrySet())
+		{
+			if(entry.getValue() != null)
+			{
+				switch ((String)entry.getKey()){
+					case Constants.USERNAME: return userService.getProjects((String) entry.getValue());
+					case Constants.GENRE: return projectsService.getProjectsByGenre((String) entry.getValue());
+				}
+			}
+		}
+
+		return new ArrayList<>();
+	}
+
 }

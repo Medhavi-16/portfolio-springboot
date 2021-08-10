@@ -13,8 +13,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProjectsServiceImpl implements ProjectsService {
 
-	@Autowired
-	private ProjectsDao dao;
+	private final ProjectsDao dao;
+
+	public ProjectsServiceImpl(ProjectsDao dao) {
+		this.dao = dao;
+	}
 
 	@Override
 	public List<Projects> getProjects() {
@@ -42,5 +45,10 @@ public class ProjectsServiceImpl implements ProjectsService {
 	public void deleteProject(String id) {
 		dao.deleteById(id);
 		return;
+	}
+
+	@Override
+	public List<Projects> getProjectsByGenre(String genre) {
+		return dao.findAllByGenre(genre);
 	}
 }

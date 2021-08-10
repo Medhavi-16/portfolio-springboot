@@ -4,10 +4,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.util.Date;
 
 @Entity
 public class Projects {
+
 
 	@Id
 	private String id;
@@ -18,14 +23,19 @@ public class Projects {
 
 	private String projectLink;
 
+
 	private String coverImageUrl;
 
+	@Temporal(TemporalType.DATE)
 	private Date dateStart;
 
+	@Temporal(TemporalType.DATE)
 	private Date dateEnd;
 
+	private String genre;
+
 	public Projects(String id, String name, String description, String projectLink, String coverImageUrl, Date dateStart,
-			Date dateEnd) {
+			Date dateEnd, String genre) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -34,6 +44,7 @@ public class Projects {
 		this.coverImageUrl = coverImageUrl;
 		this.dateStart = dateStart;
 		this.dateEnd = dateEnd;
+		this.genre = genre;
 	}
 
 	public Projects() {
@@ -49,7 +60,8 @@ public class Projects {
 				", projectLink='" + projectLink + '\'' +
 				", coverImageUrl='" + coverImageUrl + '\'' +
 				", dateStart=" + dateStart +
-				", dateEnd=" + dateEnd +
+				", dateEnd=" + dateEnd + '\'' +
+				", category=" + genre +
 				'}';
 	}
 
@@ -107,5 +119,13 @@ public class Projects {
 
 	public void setDateEnd(Date dateEnd) {
 		this.dateEnd = dateEnd;
+	}
+
+	public String getGenre() {
+		return genre;
+	}
+
+	public void setGenre(String genre) {
+		this.genre = genre;
 	}
 }
