@@ -18,9 +18,6 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UsersDao dao;
 
-	@Autowired
-	private EntityManager entityManager;
-
 	@Override
 	public String createUser(Users user) {
 		dao.save(user);
@@ -34,21 +31,9 @@ public class UserServiceImpl implements UserService {
 		return user.getProfile();
 	}
 
-	@Override
-	public Projects addProject(String uname, Projects project) {
-		Users user = dao.getUsersByUsername(uname);
-		user.addProject(project);
-		return user.getRecentProject();
-	}
-
-	//TODO
-	@Override
-	public List<Projects> getProjects(Map<String, String> params) {
-		return null;
-	}
 
 	@Override
-	public List<Projects> getProjects(String uname) {
-		return dao.getUsersByUsername(uname).getProjects();
+	public Users getUserByUsername(String username) {
+		return dao.getUsersByUsername(username);
 	}
 }

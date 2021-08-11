@@ -13,10 +13,6 @@ public interface UserService {
 
 	public Profile addProfile(String uname, Profile profile);
 
-	public Projects addProject(String uname, Projects project);
-
-	public List<Projects> getProjects(Map<String, String> params);
-
-	public List<Projects> getProjects(String uname);
+	public Users getUserByUsername(String username);
 
 }

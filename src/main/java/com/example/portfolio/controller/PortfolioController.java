@@ -115,7 +115,7 @@ public class PortfolioController {
 		Map<String, String> params = new HashMap<>();
 		params.put(Constants.USERNAME, username);
 		params.put(Constants.GENRE, genre);
-		return getProjectByParameter(params);
+		return projectsService.getProjectsByParams(params);
 	}
 
 	@GetMapping("/projects/{projectId}")
@@ -126,8 +126,7 @@ public class PortfolioController {
 
 	@PostMapping("/projects")
 	public Projects addProject(@RequestParam(value = "_username") String username, @RequestBody Projects project) {
-		userService.addProject(username, project);
-		return projectsService.addProject(project);
+		return projectsService.addProject(project, username);
 	}
 
 	@PutMapping("/projects")
@@ -177,21 +176,6 @@ public class PortfolioController {
 	@PostMapping("/create/user")
 	public String createUser(@RequestBody Users users){
 		return userService.createUser(users);
-	}
-
-	private List<Projects> getProjectByParameter(final Map<String, String> params){
-		for(Map.Entry entry: params.entrySet())
-		{
-			if(entry.getValue() != null)
-			{
-				switch ((String)entry.getKey()){
-					case Constants.USERNAME: return userService.getProjects((String) entry.getValue());
-					case Constants.GENRE: return projectsService.getProjectsByGenre((String) entry.getValue());
-				}
-			}
-		}
-
-		return new ArrayList<>();
 	}
 
 }

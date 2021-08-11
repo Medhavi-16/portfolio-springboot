@@ -1,10 +1,8 @@
 package com.example.portfolio.model;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -23,6 +21,10 @@ public class Projects {
 
 	private String projectLink;
 
+	@ManyToOne
+	@JoinColumn(name = "username")
+	private Users user;
+
 
 	private String coverImageUrl;
 
@@ -35,7 +37,7 @@ public class Projects {
 	private String genre;
 
 	public Projects(String id, String name, String description, String projectLink, String coverImageUrl, Date dateStart,
-			Date dateEnd, String genre) {
+			Date dateEnd, String genre, Users user) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -45,6 +47,7 @@ public class Projects {
 		this.dateStart = dateStart;
 		this.dateEnd = dateEnd;
 		this.genre = genre;
+		this.user = user;
 	}
 
 	public Projects() {
@@ -127,5 +130,13 @@ public class Projects {
 
 	public void setGenre(String genre) {
 		this.genre = genre;
+	}
+
+	public Users getUser() {
+		return user;
+	}
+
+	public void setUser(Users user) {
+		this.user = user;
 	}
 }

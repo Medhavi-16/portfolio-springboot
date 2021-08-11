@@ -3,9 +3,13 @@ package com.example.portfolio.service.impl;
 import javax.persistence.Entity;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import com.example.portfolio.dao.ProjectsDao;
+import com.example.portfolio.dao.UsersDao;
 import com.example.portfolio.model.Projects;
+import com.example.portfolio.model.Users;
 import com.example.portfolio.service.ProjectsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,11 +17,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProjectsServiceImpl implements ProjectsService {
 
-	private final ProjectsDao dao;
+	@Autowired
+	private ProjectsDao dao;
 
-	public ProjectsServiceImpl(ProjectsDao dao) {
-		this.dao = dao;
-	}
+	@Autowired
+	private UsersDao usersDao;
+
 
 	@Override
 	public List<Projects> getProjects() {
@@ -30,7 +35,9 @@ public class ProjectsServiceImpl implements ProjectsService {
 	}
 
 	@Override
-	public Projects addProject(Projects project) {
+	public Projects addProject(Projects project, String username) {
+		Optional<Users> user = Optional.of(usersDao.getUsersByUsername(username));
+		user.ifPresent(project::setUser);
 		dao.save(project);
 		return project;
 	}
@@ -48,7 +55,7 @@ public class ProjectsServiceImpl implements ProjectsService {
 	}
 
 	@Override
-	public List<Projects> getProjectsByGenre(String genre) {
-		return dao.findAllByGenre(genre);
+	public List<Projects> getProjectsByParams(Map<String, String> params) {
+		return dao.findProjectsByParam(params);
 	}
 }
