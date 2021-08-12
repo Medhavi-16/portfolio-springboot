@@ -2,30 +2,27 @@ package com.example.portfolio.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Interests {
 
 	@ManyToMany
-	private List<Users> user;
+	@JoinTable(
+			name = "users_interests",
+			joinColumns = @JoinColumn(name = "interest"),
+			inverseJoinColumns = @JoinColumn(name = "username"))
+	private Set<Users> users;
 
 	@Id
-	private Long id;
-
 	private String interest;
 
 	public Interests() {
 		super();
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getInterest() {
@@ -39,22 +36,24 @@ public class Interests {
 	@Override
 	public String toString() {
 		return "Interests{" +
-				"id=" + id +
 				", interest='" + interest + '\'' +
 				'}';
 	}
 
-	public List<Users> getUser() {
-		return user;
+	public Set<Users> getUsers() {
+		return users;
 	}
 
-	public void setUser(List<Users> user) {
-		this.user = user;
+	public void setUsers(Set<Users> user) {
+		this.users = user;
 	}
 
-	public Interests(List<Users> user, Long id, String interest) {
-		this.user = user;
-		this.id = id;
-		this.interest = interest;
+	public Interests(String interestName) {
+		this.users = new HashSet<>();
+		this.interest = interestName;
+	}
+
+	public void addUser(Users user) {
+		this.users.add(user);
 	}
 }

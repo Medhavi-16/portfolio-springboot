@@ -1,4 +1,4 @@
-package com.example.portfolio.dao.projects;
+package com.example.portfolio.dao.customDao.impl;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.example.portfolio.dao.customDao.ProjectsCustomDao;
 import com.example.portfolio.model.Projects;
 import org.springframework.stereotype.Component;
 
@@ -38,7 +39,7 @@ public class ProjectsCustomDaoImpl implements ProjectsCustomDao {
 				switch ((String) entry.getKey()) {
 					case "user" : predicates.add(criteriaBuilder.equal(root.get((String)entry.getKey()).get("username"), entry.getValue()));
 									break;
-					default:		predicates.add(criteriaBuilder.equal(root.get((String)entry.getKey()), entry.getValue()));
+					default:		predicates.add(criteriaBuilder.equal(criteriaBuilder.upper(root.get((String)entry.getKey())), ((String)entry.getValue()).toUpperCase()));
 				}
 
 			}

@@ -7,6 +7,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
+import java.util.Optional;
 
 @Entity
 public class Projects {
@@ -46,7 +47,7 @@ public class Projects {
 		this.coverImageUrl = coverImageUrl;
 		this.dateStart = dateStart;
 		this.dateEnd = dateEnd;
-		this.genre = genre;
+		this.genre = Optional.of(genre).orElse("miscellaneous");
 		this.user = user;
 	}
 

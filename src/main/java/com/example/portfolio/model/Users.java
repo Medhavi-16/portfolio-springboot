@@ -2,11 +2,13 @@ package com.example.portfolio.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Users {
@@ -17,8 +19,11 @@ public class Users {
 	@OneToMany
 	private List<Socials> socials;
 
-	@ManyToMany(mappedBy = "user")
-	private List<Interests> interests;
+	@Transient
+	private Set<Interests> interests;
+
+	@Transient
+	private List<Projects> projects;
 
 	private String email;
 
@@ -34,7 +39,8 @@ public class Users {
 		this.username = username;
 		profile = null;
 		socials = new ArrayList<>();
-		interests = new ArrayList<>();
+		interests = new HashSet<>();
+		projects = new ArrayList<>();
 	}
 
 	public String getEmail() {
@@ -78,11 +84,11 @@ public class Users {
 		this.socials = socials;
 	}
 
-	public List<Interests> getInterests() {
+	public Set<Interests> getInterests() {
 		return interests;
 	}
 
-	public void setInterests(List<Interests> interests) {
+	public void setInterests(Set<Interests> interests) {
 		this.interests = interests;
 	}
 
@@ -94,7 +100,11 @@ public class Users {
 		this.socials.add(socials);
 	}
 
+	public List<Projects> getProjects() {
+		return projects;
+	}
 
-
-
+	public void setProjects(List<Projects> projects) {
+		this.projects = projects;
+	}
 }

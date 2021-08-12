@@ -6,11 +6,13 @@ import java.util.List;
 import java.util.Map;
 
 import com.example.portfolio.Constants;
+import com.example.portfolio.model.Interests;
 import com.example.portfolio.model.Profile;
 import com.example.portfolio.model.Projects;
 import com.example.portfolio.model.SocialMedia;
 import com.example.portfolio.model.Socials;
 import com.example.portfolio.model.Users;
+import com.example.portfolio.service.InterestsService;
 import com.example.portfolio.service.ProfileService;
 import com.example.portfolio.service.ProjectsService;
 import com.example.portfolio.service.SocialMediaService;
@@ -46,6 +48,9 @@ public class PortfolioController {
 
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private InterestsService interestsService;
 
 
 	/**
@@ -176,6 +181,30 @@ public class PortfolioController {
 	@PostMapping("/create/user")
 	public String createUser(@RequestBody Users users){
 		return userService.createUser(users);
+	}
+
+	@PostMapping("/create/interests")
+	public String createInterests(@RequestBody String interest) {
+		return interestsService.addInterest(interest).getInterest();
+	}
+
+	@PostMapping("/interests")
+	public List<Interests> addUserInterests(@RequestParam(name = "_username", required = true) String username, @RequestBody List<String> interests) {
+//		try {
+//
+//		}
+//		catch (Exception e) {
+//			System.out.println(e.getCause());
+//			return null;
+//		}
+
+		Users user = userService.getUserByUsername(username);
+		return interestsService.addUserToInterest(interests,user);
+	}
+
+	@GetMapping("/interests/{interestName}/count")
+	public int getCountOfUsersForAnInterest(@PathVariable String interestName) {
+		return interestsService.getCountOfUsersForAnInterest(interestName);
 	}
 
 }

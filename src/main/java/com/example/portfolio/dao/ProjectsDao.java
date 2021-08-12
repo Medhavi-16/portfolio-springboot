@@ -1,6 +1,6 @@
 package com.example.portfolio.dao;
 
-import com.example.portfolio.dao.projects.ProjectsCustomDao;
+import com.example.portfolio.dao.customDao.ProjectsCustomDao;
 import com.example.portfolio.model.Projects;
 import org.springframework.data.jpa.repository.JpaRepository;
 

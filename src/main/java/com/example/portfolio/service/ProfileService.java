@@ -4,10 +4,10 @@ import com.example.portfolio.model.Profile;
 
 public interface ProfileService {
 
-	public Profile addProfile(Profile profile);
+	Profile addProfile(Profile profile);
 
-	public Profile updateProfile(Profile profile);
+	Profile updateProfile(Profile profile);
 
-	public Profile updateProfile(String param, String value);
+	Profile updateProfile(String param, String value);
 
 }

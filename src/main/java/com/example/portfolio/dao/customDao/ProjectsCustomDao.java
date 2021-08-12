@@ -1,4 +1,4 @@
-package com.example.portfolio.dao.projects;
+package com.example.portfolio.dao.customDao;
 
 import java.util.List;
 import java.util.Map;
